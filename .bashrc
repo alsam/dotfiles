@@ -62,6 +62,7 @@ fi
 
 export EDITOR=vim
 alias evim='emacsclient -t'
+alias gevim="emacsclient -c -F '((width . 128)(height . 48))'"
 
 export PATH="$HOME/bin":$PATH
 export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH
