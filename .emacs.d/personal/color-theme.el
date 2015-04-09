@@ -5,3 +5,5 @@
 ;;(disable-theme 'zenburn)
 ;;(setq prelude-theme 'solarized-dark)
 (load-theme 'solarized t)
+;;(line-number-mode t)
+(global-linum-mode t)
