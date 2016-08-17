@@ -5,17 +5,31 @@ set bs=2		" allow backspacing over everything in insert mode
 "set backup		" keep a backup file
 set viminfo='20,\"50	" read/write a .viminfo file, don't store more
 			" than 50 lines of registers
-set history=50		" keep 50 lines of command line history
+set history=100		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 
-let g:C_AuthorName      = 'Alexander Samoilov'
-let g:C_AuthorRef       = 'Mr.'
-let g:C_Email           = 'alexander.samoilov@gmail.com'
-let g:C_Company         = ''
+"let g:C_AuthorName      = 'Alexander Samoilov'
+"let g:C_AuthorRef       = 'Mr.'
+"let g:C_Email           = 'alexander.samoilov@gmail.com'
+"let g:C_Company         = ''
 
 set tabstop    =4
 set shiftwidth =4
+set number
 set expandtab
+
+"http://unix.stackexchange.com/questions/141097/how-to-enable-and-use-code-folding-in-vim
+"http://stackoverflow.com/questions/4710104/is-there-any-code-collapse-plugin-of-vim-like-this
+
+"set foldmethod=indent   
+"set foldnestmax=10
+"set nofoldenable
+"set foldlevel=2
+
+set nofoldenable     " no foldable by default
+set foldmethod=syntax
+set foldcolumn=2     " the number of columns to use for folding display at the left
+
 set cindent
 set hlsearch
 hi Search guibg=LightBlue
@@ -117,7 +131,8 @@ noremap <F3> :Autoformat<CR>
 
 " launch rust racer
 set hidden
-let g:racer_cmd = "$HOME/.cargo/bin/racer"
+"let g:racer_cmd = "$HOME/.cargo/bin/racer"
+let g:racer_cmd = "$HOME/.multirust/toolchains/nightly/cargo/bin/racer"
 let $RUST_SRC_PATH="/mnt/disk2/opt/pkgs/rust/src/"
 
 " look for tags in current and upper levels of hierarchy 
