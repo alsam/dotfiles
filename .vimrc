@@ -1,11 +1,53 @@
 set nocompatible	" Use Vim defaults (much better!)
+set history=256  " Number of things to remember in history.
+
+if exists("did_load_filetypes")
+  finish
+endif
+
+augroup filetypedetect
+  au BufNewFile,BufRead [Jj]ustfile setf yaml
+augroup END
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'racer-rust/vim-racer'
+Plugin 'JuliaLang/julia-vim'
+" Plugin 'Shougo/neocomplcache'
+" Plugin 'Shougo/neosnippet'
+" Plugin 'Shougo/neosnippet-snippets'
+Plugin 'valloric/YouCompleteMe'
+Plugin 'scrooloose/nerdtree'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+
 "syntax on
 set bs=2		" allow backspacing over everything in insert mode
 "set ai			" always set autoindenting on
 "set backup		" keep a backup file
 set viminfo='20,\"50	" read/write a .viminfo file, don't store more
 			" than 50 lines of registers
-set history=100		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 
 "let g:C_AuthorName      = 'Alexander Samoilov'
@@ -34,11 +76,14 @@ set cindent
 set hlsearch
 hi Search guibg=LightBlue
 
-au BufNewFile,BufRead [Mm]akefile*
-  \ set tabstop    =8 |
-  \ set shiftwidth =8 |
-  \ set noexpandtab   |
-  \ set nocindent
+" au BufNewFile,BufRead [Mm]akefile*
+"   \ set tabstop    =8 |
+"   \ set shiftwidth =8 |
+"   \ set noexpandtab   |
+"   \ set nocindent
+
+autocmd FileType make set noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
+autocmd FileType c,fortran set expandtab tabstop=4 shiftwidth=4 softtabstop=0
 
 "
 "-------------------------------------------------------------------
@@ -90,13 +135,6 @@ set guioptions+=m
 
 "let g:cpp_experimental_template_highlight = 1
 
-" Pathogen load
-filetype off
-
-call pathogen#infect()
-call pathogen#helptags()
-
-filetype plugin indent on
 syntax on
 
 let g:vim_markdown_math=1
@@ -125,15 +163,28 @@ let g:vim_markdown_math=1
 " let g:vim_markdown_math=1
 " " "
 
+autocmd VimEnter * NERDTree
+autocmd BufEnter * NERDTreeMirror
+
+"CTRL-t to toggle tree view with CTRL-t
+nmap <silent> <C-t> :NERDTreeToggle<CR>
+"Set F2 to put the cursor to the nerdtree
+nmap <silent> <F2> :NERDTreeFind<CR>
+
 " launch rustfmt
-noremap <F3> :Autoformat<CR>
+" noremap <F3> :Autoformat<CR>
+noremap <F3> :RustFmt<CR>
 " au BufWrite * :Autoformat
 
 " launch rust racer
 set hidden
-"let g:racer_cmd = "$HOME/.cargo/bin/racer"
-let g:racer_cmd = "$HOME/.multirust/toolchains/nightly/cargo/bin/racer"
-let $RUST_SRC_PATH="/mnt/disk2/opt/pkgs/rust/src/"
+let g:racer_cmd = "$HOME/.cargo/bin/racer"
+"let g:racer_cmd = "$HOME/.multirust/toolchains/nightly/cargo/bin/racer"
+"let $RUST_SRC_PATH="/mnt/disk2/opt/pkgs/rust/src/"
+let $RUST_SRC_PATH="/scratch/github/rust/src/"
+
+let g:neocomplcache_enable_at_startup = 1
+
 
 " look for tags in current and upper levels of hierarchy 
 set tags=tags;/
