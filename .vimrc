@@ -163,6 +163,14 @@ let g:vim_markdown_math=1
 " let g:vim_markdown_math=1
 " " "
 
+
+"enable mouse support
+set mouse=a
+
+" check file change every 4 seconds ('CursorHold') and reload the buffer upon detecting change
+set autoread
+au CursorHold * checktime
+
 autocmd VimEnter * NERDTree
 autocmd BufEnter * NERDTreeMirror
 
