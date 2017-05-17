@@ -174,8 +174,8 @@ au CursorHold * checktime
 autocmd VimEnter * NERDTree
 autocmd BufEnter * NERDTreeMirror
 
-"CTRL-t to toggle tree view with CTRL-t
-nmap <silent> <C-t> :NERDTreeToggle<CR>
+"CTRL-q to toggle tree view with CTRL-q
+nmap <silent> <C-q> :NERDTreeToggle<CR>
 "Set F2 to put the cursor to the nerdtree
 nmap <silent> <F2> :NERDTreeFind<CR>
 
