@@ -24,6 +24,7 @@ Plugin 'JuliaLang/julia-vim'
 " Plugin 'Shougo/neosnippet'
 " Plugin 'Shougo/neosnippet-snippets'
 Plugin 'valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 Plugin 'scrooloose/nerdtree'
 
 " All of your Plugins must be added before the following line

@@ -1,44 +1,106 @@
-# /etc/skel/.bashrc
 #
-# This file is sourced by all *interactive* bash shells on startup,
-# including some apparently interactive shells such as scp and rcp
-# that can't tolerate any output.  So make sure this doesn't display
-# anything or bad things will happen !
+# ~/.bashrc
+#
 
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
-# Test for an interactive shell.  There is no need to set anything
-# past this point for scp and rcp, and it's important to refrain from
-# outputting anything in those cases.
-if [[ $- != *i* ]] ; then
-	# Shell is non-interactive.  Be done now!
-	return
+alias ls='ls --color=auto'
+#PS1='[\u@\h \W]\$ '
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
 fi
 
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
 
-# Put your fun stuff here.
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
 
-export http_proxy=http://10.122.85.41:3128/
-export https_proxy=http://10.122.85.41:3128/
-export ftp_proxy=http://10.122.85.41:3128/
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
 
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-	alias ls='ls --color=auto'
-	alias ll='ls -aL'
-	#alias dir='dir --color=auto'
-	#alias vdir='vdir --color=auto'
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-	#alias grep='grep --color=auto'
-	#alias fgrep='fgrep --color=auto'
-	#alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -53,37 +115,27 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		. /usr/share/bash-completion/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-	       	. /etc/bash_completion
-	fi
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
 fi
 
+# [Couldn't connect to accessibility bus: Failed to connect to socket /tmp/dbus-ZGPUGJON38](https://bbs.archlinux.org/viewtopic.php?id=228894)
+export NO_AT_BRIDGE=1
+
 export EDITOR=vim
-alias evim='emacsclient -t'
-alias gevim="emacsclient -c -F '((width . 128)(height . 48))'"
 
-export PATH="$HOME/bin":$PATH
-export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH
-export JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyHost=10.122.85.4 -Dhttp.proxyPort=3128"
+export RUST_SRC_PATH="/scratch/opt/pkgs/rust/src"
+export PATH="$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/bin:$PATH"
 
-# boost & etc.
-export LD_LIBRARY_PATH="$HOME/opt/boost/lib":$LD_LIBRARY_PATH
+# for openblas-provider
+# see [OpenBLAS: Detecting CPU failed during build](https://github.com/JuliaLang/julia/issues/394)
+# symptome: error: ‘SGEMM_DEFAULT_UNROLL_M’ undeclared
+export CARGO_FEATURE_SYSTEM_OPENBLAS=1
 
-# scala
-export SCALA_HOME=$HOME/opt/scala
-export PATH="$SCALA_HOME/bin":$PATH
+# for arrayfire-rust
+export AF_PATH=/usr
 
-# CUDA setup
-export CUDA_HOME=/opt/cuda
-export PATH="$CUDA_HOME/bin":$PATH
-export LD_LIBRARY_PATH="$CUDA_HOME/lib64":$LD_LIBRARY_PATH
-
-# CARP & VOBLA & PENCIL
-export CARP_ROOT=$HOME/work/carpproject
-export ANTLR_HOME=$CARP_ROOT/antlr
-export PENCIL_HOME=$CARP_ROOT/pencil
-export CLASSPATH=$ANTLR_HOME/ant-antlr3.jar:$ANTLR_HOME/antlr3.jar
-export CARP_BUILT="$CARP_ROOT/built"
-export PATH="$CARP_BUILT/bin":$PATH
+alias catkin_make="catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python2 -DPYTHON_INCLUDE_DIR=/usr/include/python2.7 -DPYTHON_LIBRARY=/usr/lib/libpython2.7.so"
