@@ -26,6 +26,7 @@ Plugin 'JuliaLang/julia-vim'
 Plugin 'valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'scrooloose/nerdtree'
+Plugin 'igankevich/mesonic'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
