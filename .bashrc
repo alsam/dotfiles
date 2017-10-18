@@ -128,7 +128,8 @@ export NO_AT_BRIDGE=1
 export EDITOR=vim
 
 export RUST_SRC_PATH="/scratch/opt/pkgs/rust/src"
-export PATH="$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/bin:$PATH"
+export NIM_PATH="$HOME/work/github/nim-lang/Nim"
+export PATH="$NIM_PATH/bin":"$HOME/.nimble/bin":"$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/bin:$PATH"
 
 # for openblas-provider
 # see [OpenBLAS: Detecting CPU failed during build](https://github.com/JuliaLang/julia/issues/394)
