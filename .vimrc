@@ -89,6 +89,16 @@ hi Search guibg=LightBlue
 
 autocmd FileType make set noexpandtab tabstop=8 shiftwidth=8 softtabstop=0
 autocmd FileType c,fortran set expandtab tabstop=4 shiftwidth=4 softtabstop=0
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+function! SetupCommandAbbrs(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+
+" Use C to open coc config
+call SetupCommandAbbrs('C', 'CocConfig')
 
 "
 "-------------------------------------------------------------------
