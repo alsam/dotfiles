@@ -1,4 +1,5 @@
 set nocompatible	" Use Vim defaults (much better!)
+filetype off
 set history=256  " Number of things to remember in history.
 
 if exists("did_load_filetypes")
@@ -12,6 +13,7 @@ augroup END
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+"call vundle#begin(~/.vim/bundle/Vundle.vim)
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
@@ -27,6 +29,7 @@ Plugin 'valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 Plugin 'scrooloose/nerdtree'
 Plugin 'igankevich/mesonic'
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
