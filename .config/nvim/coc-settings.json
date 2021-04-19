@@ -6,6 +6,7 @@
                 "c",
                 "cc",
                 "cpp",
+                "cuda",
                 "objc",
                 "objcpp"
             ],
